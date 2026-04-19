@@ -295,26 +295,8 @@
   <script>
     let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
 
-    // --- MOCK API FOR LOCAL DEV FALLBACK ---
-    const MOCK_GAS = {
-       getStaffList: () => ["Admin", "Priya", "nuera"],
-       autoLogin: (email) => ({role:"staff", name:"Test Staff", progress: 1}),
-       loginUser: (name, p) => (name==="Admin" ? {role:"admin"} : {role:"staff", name:name, progress: 1}),
-       getStaffTasks: (name) => ({
-          progress: 1,
-          tasks: [
-            {row: 2, id: 'T-7856', date: '26-Jan', category: 'Routine', desc: 'Review existing Facebook ad accounts and access permissions', link: 'None'},
-            {row: 3, id: 'T-8149', date: '26-Jan', category: 'Routine', desc: 'Check current Facebook page status and ad history', link: 'None'},
-            {row: 4, id: 'T-7590', date: '26-Jan', category: 'Learning', desc: 'Understand basics of Facebook advertising ecosystem', link: 'Search: FB Ads Basics 2026'},
-            {row: 5, id: 'T-5981', date: '26-Jan', category: 'Learning', desc: 'Learn difference between campaign ad set and ad', link: 'Search: FB Ads structure'}
-          ]
-       }),
-       getAdminSummary: () => [{name: "nuera", done: 1, total: 100, pct: 1}, {name: "Priya", done: 45, total: 50, pct: 90}],
-       markTaskDone: () => console.log("Task marked")
-    };
-    
-    // Check if we are running live in Google Apps Script or Local
-    const runAPI = (typeof google !== 'undefined' && google.script && google.script.run) ? google.script.run : MOCK_GAS;
+    // Production Google Apps Script API Connection
+    const runAPI = google.script.run;
 
     window.onload = () => {
       document.getElementById('m-rate').oninput = function() { document.getElementById('rate-val').innerText = this.value; }
@@ -332,7 +314,7 @@
              finishLogin(res);
            }
          };
-         if(runAPI.withSuccessHandler) runAPI.withSuccessHandler(handleAutoLogin).autoLogin(userEmail);
+         runAPI.withSuccessHandler(handleAutoLogin).autoLogin(userEmail);
       } else {
          loadManualLogin();
       }
@@ -346,8 +328,7 @@
         else list.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
       }
 
-      if(runAPI.withSuccessHandler) runAPI.withSuccessHandler(handleStaffList).getStaffList();
-      else handleStaffList(runAPI.getStaffList());
+      runAPI.withSuccessHandler(handleStaffList).getStaffList();
     }
 
     function login() {
@@ -368,8 +349,7 @@
         }
       }
 
-      if(runAPI.withSuccessHandler) runAPI.withSuccessHandler(handleLogin).loginUser(name, pass);
-      else setTimeout(() => handleLogin(runAPI.loginUser(name, pass)), 800);
+      runAPI.withSuccessHandler(handleLogin).loginUser(name, pass);
     }
 
     function finishLogin(res) {
@@ -402,8 +382,7 @@
         renderTasks(allTasks);
       }
 
-      if(runAPI.withSuccessHandler) runAPI.withSuccessHandler(handleData).getStaffTasks(name);
-      else setTimeout(() => handleData(runAPI.getStaffTasks(name)), 600);
+      runAPI.withSuccessHandler(handleData).getStaffTasks(name);
     }
 
     function renderTasks(tasks) {
@@ -509,8 +488,7 @@
       allTasks = allTasks.filter(t => t.row !== currentRow); 
       filterTasks(currentFilter);
       
-      if(runAPI.withSuccessHandler) runAPI.markTaskDone(currentRow, r, rem);
-      else MOCK_GAS.markTaskDone(); 
+      runAPI.markTaskDone(currentRow, r, rem);
     }
 
     // 3D Parallax Tilt Effect for the login card
@@ -594,15 +572,11 @@
          loadAdminData(); // Refresh progress stats
       };
       
-      if(runAPI.withSuccessHandler) {
-         runAPI.withFailureHandler(err => {
-            btn.innerText = "Inject Tasks to Database";
-            msg.innerText = "Error: " + err.message;
-            msg.className = "text-center text-xs mt-3 h-4 font-bold text-red-400";
-         }).withSuccessHandler(handleRes).processJSON(json, date, name, role);
-      } else {
-         setTimeout(() => handleRes(`✅ Imported tasks for ${name} (MOCK)`), 800);
-      }
+      runAPI.withFailureHandler(err => {
+         btn.innerText = "Inject Tasks to Database";
+         msg.innerText = "Error: " + err.message;
+         msg.className = "text-center text-xs mt-3 h-4 font-bold text-red-400";
+      }).withSuccessHandler(handleRes).processJSON(json, date, name, role);
     }
 
     function runDeleteBatch() {
@@ -631,15 +605,11 @@
          loadAdminData(); // Refresh summary stats
       };
       
-      if(runAPI.withSuccessHandler) {
-         runAPI.withFailureHandler(err => {
-            btn.innerText = "Delete Archive";
-            msg.innerText = "Error: " + err.message;
-            msg.className = "text-xs mt-3 h-4 font-bold text-red-400";
-         }).withSuccessHandler(handleRes).deleteBatch(batchId);
-      } else {
-         setTimeout(handleRes, 800);
-      }
+      runAPI.withFailureHandler(err => {
+         btn.innerText = "Delete Archive";
+         msg.innerText = "Error: " + err.message;
+         msg.className = "text-xs mt-3 h-4 font-bold text-red-400";
+      }).withSuccessHandler(handleRes).deleteBatch(batchId);
     }
   </script>
 </body>
