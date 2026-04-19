@@ -220,26 +220,65 @@ function handleAPIAction(action, p) {
   }
 }
 
+// --- FINAL CONSOLIDATED API ROUTER ---
+function doGet(e) {
+  const action = e.parameter.action;
+  
+  // 1. ROUTE DATA REQUESTS (Fixes the Loading Screen)
+  if (action === 'getStaffList') {
+    return createJSONResponse(getStaffList());
+  }
+  if (action === 'getStaffTasks') {
+    return createJSONResponse(getStaffTasks(e.parameter.name));
+  }
+  if (action === 'loginUser') {
+    return createJSONResponse(loginUser(e.parameter.name, e.parameter.password));
+  }
+  if (action === 'getProgress') {
+    return handleGetProgress();
+  }
+  if (action === 'markTaskDone') {
+    markTaskDone(e.parameter.r, e.parameter.rating, e.parameter.rem);
+    return createJSONResponse({success: true});
+  }
+
+  // 2. ROUTE WEB INTERFACE (For direct links)
+  const template = HtmlService.createTemplateFromFile('index');
+  try {
+    template.activeEmail = Session.getActiveUser().getEmail() || '';
+  } catch(err) {
+    template.activeEmail = '';
+  }
+  return template.evaluate()
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// Helper to ensure proper JSON formatting for GitHub Fetch
+function createJSONResponse(data) {
+  return ContentService.createTextOutput(JSON.stringify(data))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Keep your existing doPost for cross-compatibility
 function doPost(e) {
   try {
     const payload = JSON.parse(e.postData.contents);
-    const result = handleAPIAction(payload.action, payload.params || {});
-    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+    const action = payload.action;
+    const p = payload.params || {};
+    let result = {};
+    
+    switch(action) {
+      case 'getStaffList': result = getStaffList(); break;
+      case 'getStaffTasks': result = getStaffTasks(p.name); break;
+      case 'loginUser': result = loginUser(p.name, p.password); break;
+      default: result = { error: "Action not supported via POST" };
+    }
+    return createJSONResponse(result);
   } catch(err) {
-    return ContentService.createTextOutput(JSON.stringify({ error: err.message })).setMimeType(ContentService.MimeType.JSON);
+    return createJSONResponse({ error: err.message });
   }
 }
-
-function doGet(e) { 
-  // If ?action=xxx is present in URL, route it as a standard GET API request bypassing UI
-  if (e && e.parameter && e.parameter.action) {
-     try {
-       const result = handleAPIAction(e.parameter.action, e.parameter);
-       return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
-     } catch(err) {
-       return ContentService.createTextOutput(JSON.stringify({ error: err.message })).setMimeType(ContentService.MimeType.JSON);
-     }
-  }
 
   // Provide HTML UI portal for users who simply click the web app link
   const template = HtmlService.createTemplateFromFile('index');
