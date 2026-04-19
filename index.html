@@ -4,53 +4,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillSync AI | Staff Portal</title>
-  
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
-  
+
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'], },
-          colors: { space: '#06080A', surface: '#111827', brand: '#3b82f6', accent: '#8b5cf6', }
+          fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Outfit', 'sans-serif'] },
+          colors: { space: '#06080A', surface: '#111827', brand: '#3b82f6', accent: '#8b5cf6' }
         }
       }
     }
   </script>
-  
-  <style>
-    body { background-color: theme('colors.space'); background-image: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%), radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%); perspective: 1000px; }
-    .glass-card { background: rgba(17, 24, 39, 0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); transform-style: preserve-3d; }
-    .glow-text { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-    
-    /* Ambient animated background elements */
-    .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.6; animation: float 10s ease-in-out infinite; border-radius: 50%; pointer-events: none; }
-    .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(59, 130, 246, 0.3); }
-    .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: rgba(139, 92, 246, 0.3); animation-delay: -5s; }
-    @keyframes float { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.1); } }
 
-    /* Login specifics */
+  <style>
+    body { background-color: #06080A; background-image: radial-gradient(circle at 15% 50%, rgba(59,130,246,0.15), transparent 25%), radial-gradient(circle at 85% 30%, rgba(139,92,246,0.15), transparent 25%); }
+    .glass-card { background: rgba(17,24,39,0.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 30px rgba(0,0,0,0.1); transform-style: preserve-3d; }
+    .glow-text { text-shadow: 0 0 20px rgba(59,130,246,0.5); }
+    .blob { position: absolute; filter: blur(80px); z-index: -1; opacity: 0.6; animation: float 10s ease-in-out infinite; border-radius: 50%; pointer-events: none; }
+    .blob-1 { top: -10%; left: -10%; width: 400px; height: 400px; background: rgba(59,130,246,0.3); }
+    .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: rgba(139,92,246,0.3); animation-delay: -5s; }
+    @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-30px) scale(1.1); } }
     .btn-gradient { background-size: 200% auto; transition: 0.5s; background-image: linear-gradient(to right, #3b82f6 0%, #8b5cf6 51%, #3b82f6 100%); }
     .btn-gradient:hover { background-position: right center; }
     .input-field { transition: all 0.3s ease; }
-    .input-field:focus { box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); border-color: rgba(59, 130, 246, 0.5); }
-    .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    .input-field:focus { box-shadow: 0 0 15px rgba(59,130,246,0.3); border-color: rgba(59,130,246,0.5); }
+    .fade-in-up { animation: fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; opacity: 0; transform: translateY(20px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
     .delay-100 { animation-delay: 100ms; }
     .delay-200 { animation-delay: 200ms; }
     .delay-300 { animation-delay: 300ms; }
-    .pop-out { transform: translateZ(30px); }
-
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
   </style>
 </head>
-<body class="text-gray-100 min-h-screen text-sans antialiased overflow-x-hidden">
+<body class="text-gray-100 min-h-screen antialiased overflow-x-hidden">
 
-  <!-- Ambient Background -->
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
 
@@ -58,11 +52,9 @@
   <nav id="top-nav" class="fixed w-full z-50 glass-card border-b-0 border-white/10 hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
-        <div class="flex-shrink-0">
-          <span class="font-heading font-bold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 glow-text">SkillSync AI</span>
-        </div>
+        <span class="font-heading font-bold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 glow-text">SkillSync AI</span>
         <div id="nav-actions" class="hidden">
-           <button onclick="logout()" class="text-xs bg-red-500/20 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white px-4 py-1.5 rounded-full font-bold transition-all">Logout</button>
+          <button onclick="logout()" class="text-xs bg-red-500/20 text-red-500 border border-red-500/20 hover:bg-red-500 hover:text-white px-4 py-1.5 rounded-full font-bold transition-all">Logout</button>
         </div>
       </div>
     </div>
@@ -71,27 +63,21 @@
   <!-- Login View -->
   <div id="login-view" class="pt-32 pb-12 w-full max-w-md mx-auto px-4 relative flex flex-col justify-center min-h-screen">
     <div id="login-card" class="glass-card rounded-[30px] shadow-2xl p-10 w-full relative z-10 fade-in-up border-t border-l border-white/10 mx-auto mt-[-100px]">
-      <!-- Inner subtle glow -->
       <div class="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/20 rounded-full blur-[50px] pointer-events-none"></div>
-      
-      <!-- Logo & Title -->
-      <div class="text-center mb-10 relative z-10 fade-in-up delay-100 pop-out">
+      <div class="text-center mb-10 relative z-10 fade-in-up delay-100">
         <div class="flex items-center justify-center gap-3 mb-2">
-          <span class="text-4xl filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">🦁</span>
+          <span class="text-4xl">🦁</span>
           <h1 class="text-3xl font-heading font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 glow-text">NUERA</h1>
         </div>
-        <p class="text-xs border border-white/10 bg-white/5 inline-block px-4 py-1.5 rounded-full text-gray-300 font-medium tracking-widest uppercase mt-2 shadow-inner">Enterprise Portal</p>
+        <p class="text-xs border border-white/10 bg-white/5 inline-block px-4 py-1.5 rounded-full text-gray-300 font-medium tracking-widest uppercase mt-2">Enterprise Portal</p>
       </div>
 
-      <!-- Form -->
-      <div class="space-y-6 relative z-10 pop-out">
-        <!-- Select Name -->
+      <div class="space-y-6 relative z-10">
         <div class="fade-in-up delay-200">
           <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">Select Identity</label>
           <div class="relative">
-            <select id="login-name" class="input-field w-full border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white bg-surface/80 focus:outline-none appearance-none font-medium transition-colors cursor-pointer text-center">
-              <option value="" disabled selected>Authenticate As...</option>
-              <option>Loading...</option>
+            <select id="login-name" class="input-field w-full border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white bg-[#111827] focus:outline-none appearance-none font-medium cursor-pointer">
+              <option value="" disabled selected>Loading staff...</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
               <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -99,33 +85,30 @@
           </div>
         </div>
 
-        <!-- Password -->
         <div class="fade-in-up delay-200">
           <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">Security PIN</label>
-          <input type="password" id="login-pass" placeholder="••••••••" class="input-field w-full border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white bg-surface/80 focus:outline-none text-center tracking-[0.5em] font-medium placeholder-gray-500/50 backdrop-blur-sm transition-all text-center uppercase">
+          <input type="password" id="login-pass" placeholder="••••••••" class="input-field w-full border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white bg-[#111827] focus:outline-none text-center tracking-[0.5em] font-medium">
         </div>
 
-        <!-- Login Button -->
         <div class="fade-in-up delay-300 pt-3">
-          <button id="login-btn" onclick="login()" class="btn-gradient w-full text-white font-bold py-4 rounded-xl transition-all text-xs tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] flex justify-center items-center gap-3 border border-white/10 group">
+          <button id="login-btn" onclick="login()" class="btn-gradient w-full text-white font-bold py-4 rounded-xl text-xs tracking-widest uppercase shadow-[0_0_20px_rgba(59,130,246,0.3)] flex justify-center items-center gap-3 border border-white/10 group">
             Initialize Access
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 group-hover:translate-x-1.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
             </svg>
           </button>
         </div>
-        
-        <p id="msg" class="text-center text-red-500 text-xs mt-3 font-semibold h-4"></p>
+        <p id="msg" class="text-center text-red-400 text-xs mt-3 font-semibold h-4"></p>
       </div>
-      
-      <div class="mt-8 text-center fade-in-up delay-300 pop-out">
-         <span class="text-[10px] text-gray-500 font-mono tracking-widest flex items-center justify-center gap-2">
-           <span class="relative flex h-2 w-2">
-             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-             <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-           </span>
-           SECURE CONNECTION
-         </span>
+
+      <div class="mt-8 text-center fade-in-up delay-300">
+        <span class="text-[10px] text-gray-500 font-mono tracking-widest flex items-center justify-center gap-2">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          SECURE CONNECTION
+        </span>
       </div>
     </div>
   </div>
@@ -134,59 +117,50 @@
   <div id="staff-view" class="hidden pt-24 pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <header class="mb-12">
       <h1 class="text-4xl md:text-5xl font-heading font-bold mb-2 text-white">Welcome back, <span id="s-name" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 glow-text">Name</span></h1>
-      <p class="text-lg text-gray-400">Daily Intelligence Hub directly connected via Apps Script.</p>
+      <p class="text-lg text-gray-400">Daily Intelligence Hub — Powered by SkillSync AI.</p>
     </header>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      
-      <!-- Left Column: Tasks -->
       <div class="lg:col-span-2 space-y-6">
-        
-        <!-- Active Task Section -->
-        <div class="glass-card rounded-2xl p-6 relative overflow-visible border border-blue-500/30">
+
+        <!-- Active Task -->
+        <div class="glass-card rounded-2xl p-6 border border-blue-500/30">
           <h2 class="text-xl font-heading font-semibold text-white mb-4">Current Active Task</h2>
           <div id="active-task-container">
-            <div class="text-center text-gray-500 py-6 border border-dashed border-white/10 rounded-xl">
-              No active task selected. Please select a task from your available batch below.
-            </div>
+            <div class="text-center text-gray-500 py-6 border border-dashed border-white/10 rounded-xl">No active task selected. Pick one below.</div>
           </div>
         </div>
 
-        <!-- Available Task Batch -->
-        <div class="glass-card rounded-2xl p-6 relative overflow-visible">
+        <!-- Task List -->
+        <div class="glass-card rounded-2xl p-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-white/5 gap-4">
             <h2 class="text-xl font-heading font-semibold text-white">Available Task Batch</h2>
-            <!-- Filters -->
             <div class="flex gap-2">
-               <button onclick="filterTasks('All')" class="px-4 py-1.5 bg-surface border border-white/10 rounded-lg text-xs font-bold text-gray-300 hover:bg-white/10 transition-colors">All</button>
-               <button onclick="filterTasks('Routine')" class="px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-lg text-xs font-bold text-blue-400 hover:bg-blue-500/20 transition-colors">Routine</button>
-               <button onclick="filterTasks('Learning')" class="px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-xs font-bold text-purple-400 hover:bg-purple-500/20 transition-colors">Learning</button>
+              <button onclick="filterTasks('All')" class="px-4 py-1.5 bg-[#111827] border border-white/10 rounded-lg text-xs font-bold text-gray-300 hover:bg-white/10 transition-colors">All</button>
+              <button onclick="filterTasks('Routine')" class="px-4 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-lg text-xs font-bold text-blue-400 hover:bg-blue-500/20 transition-colors">Routine</button>
+              <button onclick="filterTasks('Learning')" class="px-4 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-lg text-xs font-bold text-purple-400 hover:bg-purple-500/20 transition-colors">Learning</button>
             </div>
           </div>
-          
           <div id="task-list" class="space-y-4">
-             <!-- Tasks inject here -->
-             <div class="text-center text-gray-400 py-8">Loading tasks from cloud...</div>
+            <div class="text-center text-gray-400 py-8 animate-pulse">Loading tasks from cloud...</div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Progress Context -->
+      <!-- Progress -->
       <div class="space-y-6">
         <div class="glass-card rounded-2xl p-6 border-t border-t-blue-500/30">
           <div class="flex justify-between items-center mb-6">
-             <h2 class="text-xl font-heading font-semibold text-white">Progress Timeline</h2>
-             <span class="text-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]">🚀</span>
+            <h2 class="text-xl font-heading font-semibold text-white">Progress</h2>
+            <span class="text-2xl">🚀</span>
           </div>
-          <div class="relative pt-1">
-            <div class="flex mb-2 items-center justify-between">
-               <span class="text-[10px] font-bold uppercase tracking-wider text-blue-400 bg-blue-400/10 border border-blue-400/20 py-1 px-3 rounded-full">Overall Completion</span>
-               <span id="s-prog" class="text-2xl font-bold text-white glow-text">0%</span>
-            </div>
-            <div class="overflow-hidden h-3 mt-4 text-xs flex rounded-full bg-surface border border-white/5">
-              <div id="prog-bar" style="width: 0%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-out relative">
-                 <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
-              </div>
+          <div class="flex mb-2 items-center justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-blue-400 bg-blue-400/10 border border-blue-400/20 py-1 px-3 rounded-full">Overall Completion</span>
+            <span id="s-prog" class="text-2xl font-bold text-white glow-text">0%</span>
+          </div>
+          <div class="overflow-hidden h-3 mt-4 flex rounded-full bg-[#111827] border border-white/5">
+            <div id="prog-bar" style="width:0%" class="bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-out relative">
+              <div class="absolute inset-0 bg-white/20 animate-pulse"></div>
             </div>
           </div>
         </div>
@@ -196,266 +170,252 @@
 
   <!-- Admin View -->
   <div id="admin-view" class="hidden pt-24 pb-12 max-w-4xl mx-auto px-4">
-     <div class="glass-card rounded-2xl p-8 relative overflow-hidden">
-         <div class="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full"></div>
-         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 relative z-10 gap-4">
-             <h1 class="text-3xl font-heading font-bold text-white flex items-center gap-3">
-                <span>🦁</span> NUERA Admin Dashboard
-             </h1>
-             <a href="prompt-generator.html" target="_blank" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm tracking-wide shadow-lg shadow-purple-500/20 transition-all group border border-white/10">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-300 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                Prompt Generator
-             </a>
-         </div>
-         <div id="admin-list" class="space-y-4 relative z-10"></div>
-         
-         <!-- JSON Importer Module -->
-         <div class="mt-8 border-t border-white/10 pt-8 relative z-10" id="admin-importer">
-            <h2 class="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2">
-              <span class="text-blue-400">📥</span> Import New Task Batch
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                   <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">Assign to Staff Name</label>
-                   <input type="text" id="imp-name" placeholder="e.g. Priya" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50 shadow-inner">
-                </div>
-                <div>
-                   <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">Target Role</label>
-                   <input type="text" id="imp-role" placeholder="e.g. Marketing" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50 shadow-inner">
-                </div>
-                <div>
-                   <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">Start Date</label>
-                   <input type="date" id="imp-date" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50 [color-scheme:dark] shadow-inner">
-                </div>
-            </div>
-            
-            <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase pl-1">AI Generated JSON Array</label>
-            <textarea id="imp-json" class="w-full bg-surface border border-white/10 rounded-xl p-4 text-xs font-mono text-blue-300 focus:outline-none focus:border-blue-500/50 h-32 resize-none mb-4 shadow-inner" placeholder="[{&#13;&#10;  'day': 1,&#13;&#10;  'category': '...',&#13;&#10;  'task': '...',&#13;&#10;  'resources': '...'&#13;&#10;}]"></textarea>
-            
-            <button id="imp-btn" onclick="runImport()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-500/20 text-sm tracking-widest uppercase group flex justify-center items-center gap-2">
-               Inject Tasks to Database
-               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:-translate-y-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-            </button>
-            <p id="imp-msg" class="text-center text-xs mt-4 h-4 font-bold tracking-widest uppercase"></p>
-         </div>
-         
-         <!-- Batch Management Module -->
-         <div class="mt-8 border-t border-white/10 pt-8 relative z-10" id="admin-batch-manager">
-            <h2 class="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2">
-              <span class="text-red-400">🗑️</span> Manage Batches
-            </h2>
-            <div class="flex flex-col sm:flex-row gap-4">
-                <div class="flex-1">
-                   <input type="text" id="del-batch-id" placeholder="Enter Batch ID (e.g. BATCH-121530)" class="w-full bg-surface border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-red-500/50 shadow-inner">
-                </div>
-                <button id="del-btn" onclick="runDeleteBatch()" class="py-3.5 px-8 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white font-bold rounded-xl transition-all text-sm tracking-widest uppercase">
-                   Delete Archive
-                </button>
-            </div>
-            <p id="del-msg" class="text-xs mt-3 h-4 font-bold tracking-widest uppercase"></p>
-         </div>
-     </div>
+    <div class="glass-card rounded-2xl p-8 relative overflow-hidden">
+      <div class="absolute inset-0 bg-blue-500/5 blur-3xl rounded-full"></div>
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 relative z-10 gap-4">
+        <h1 class="text-3xl font-heading font-bold text-white flex items-center gap-3">🦁 NUERA Admin Dashboard</h1>
+        <a href="prompt-generator.html" target="_blank" class="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all border border-white/10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-yellow-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Prompt Generator
+        </a>
+      </div>
+
+      <div id="admin-list" class="space-y-4 relative z-10 mb-8"></div>
+
+      <!-- Import Module -->
+      <div class="border-t border-white/10 pt-8 relative z-10">
+        <h2 class="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2"><span class="text-blue-400">📥</span> Import New Task Batch</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase">Staff Name</label>
+            <input type="text" id="imp-name" placeholder="e.g. Priya" class="w-full bg-[#111827] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase">Role</label>
+            <input type="text" id="imp-role" placeholder="e.g. Marketing" class="w-full bg-[#111827] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50">
+          </div>
+          <div>
+            <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase">Start Date</label>
+            <input type="date" id="imp-date" class="w-full bg-[#111827] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500/50 [color-scheme:dark]">
+          </div>
+        </div>
+        <label class="block text-[10px] font-bold text-gray-400 mb-2 tracking-widest uppercase">AI Generated JSON Array</label>
+        <textarea id="imp-json" rows="5" class="w-full bg-[#111827] border border-white/10 rounded-xl p-4 text-xs font-mono text-blue-300 focus:outline-none focus:border-blue-500/50 resize-none mb-4" placeholder='[{"day":1,"category":"Routine","task":"Check email","resources":"None"}]'></textarea>
+        <button id="imp-btn" onclick="runImport()" class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl text-sm tracking-widest uppercase shadow-lg flex justify-center items-center gap-2">
+          Inject Tasks to Database
+        </button>
+        <p id="imp-msg" class="text-center text-xs mt-4 font-bold tracking-widest uppercase h-4"></p>
+      </div>
+
+      <!-- Batch Manager -->
+      <div class="border-t border-white/10 pt-8 mt-8 relative z-10">
+        <h2 class="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2"><span class="text-red-400">🗑️</span> Manage Batches</h2>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <input type="text" id="del-batch-id" placeholder="Enter Batch ID (e.g. BATCH-121530)" class="flex-1 bg-[#111827] border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-red-500/50">
+          <button id="del-btn" onclick="runDeleteBatch()" class="py-3.5 px-8 bg-red-600/20 border border-red-500/30 text-red-400 hover:bg-red-500 hover:text-white font-bold rounded-xl text-sm tracking-widest uppercase transition-all">Delete Archive</button>
+        </div>
+        <p id="del-msg" class="text-xs mt-3 font-bold tracking-widest uppercase h-4"></p>
+      </div>
+    </div>
   </div>
 
-  <!-- Modal for Task Completion -->
-  <div id="modal" class="hidden fixed inset-0 bg-space/90 flex items-center justify-center z-[100] backdrop-blur-md px-4 transition-opacity">
-    <div class="glass-card w-full max-w-sm p-6 rounded-2xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10" style="animation: slideUp 0.3s ease-out forwards;">
+  <!-- Task Done Modal -->
+  <div id="modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] backdrop-blur-md px-4">
+    <div class="glass-card w-full max-w-sm p-6 rounded-2xl border border-white/10" style="animation: slideUp 0.3s ease-out forwards;">
       <div class="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
         <div>
           <h3 class="font-bold text-lg text-white">Complete Task?</h3>
-          <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Review CTA Options</p>
+          <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-wider">Submit your review</p>
         </div>
-        <button onclick="closeModal()" class="text-xl font-bold text-gray-500 hover:text-white transition-colors">&times;</button>
+        <button onclick="closeModal()" class="text-xl font-bold text-gray-500 hover:text-white">&times;</button>
       </div>
-
       <p id="m-title" class="text-sm font-medium text-blue-300 mb-6 bg-blue-500/10 border border-blue-500/20 p-3 rounded-lg"></p>
-
       <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-2">Quality Rating (1-5)</label>
       <div class="flex items-center gap-4 mb-6">
-        <input type="range" id="m-rate" min="1" max="5" value="5" class="w-full accent-green-500 h-1.5 bg-surface rounded-lg appearance-none outline-none">
+        <input type="range" id="m-rate" min="1" max="5" value="5" class="w-full accent-green-500 h-1.5 bg-[#111827] rounded-lg appearance-none outline-none">
         <span id="rate-val" class="font-bold text-green-400 text-lg w-4">5</span>
       </div>
-
       <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest block mb-2">Remarks / Notes</label>
-      <textarea id="m-rem" class="w-full border border-white/10 rounded-lg p-3 text-sm h-24 mb-6 bg-surface text-white focus:outline-none focus:border-green-500/50 resize-none font-sans" placeholder="Any blockers or insights?"></textarea>
-      
-      <button onclick="confirmDone()" class="w-full py-3.5 text-white font-bold bg-green-600 hover:bg-green-500 rounded-xl transition-colors shadow-lg shadow-green-900/30 flex justify-center items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-        </svg>
+      <textarea id="m-rem" class="w-full border border-white/10 rounded-lg p-3 text-sm h-24 mb-6 bg-[#111827] text-white focus:outline-none focus:border-green-500/50 resize-none" placeholder="Any blockers or insights?"></textarea>
+      <button onclick="confirmDone()" class="w-full py-3.5 text-white font-bold bg-green-600 hover:bg-green-500 rounded-xl transition-colors flex justify-center items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
         Mark Done
       </button>
     </div>
   </div>
 
-  <style>
-    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  </style>
-
   <script>
-    let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
+    // ============================================================
+    // CONFIG — Your Apps Script Deployment URL
+    // ============================================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbyIydXwNXhDlhRNbSCa_KJCCZgFrGE57KpDrUnVisO7amtt63PWunIIicFjBTVyGy6u/exec";
 
-    // Production Google Apps Script API Connection
-    const isLive = typeof google !== 'undefined' && google.script && google.script.run;
-    const runAPI = isLive ? google.script.run : null;
-
-    window.onload = () => {
-      if (!isLive) {
-         document.body.innerHTML = "<div style='display:flex;height:100vh;align-items:center;justify-content:center;background:#0f172a;color:white;text-align:center'><h2>⚠️ Access Denied</h2><p>This UI Portal must be accessed securely via your Google Apps Script Deployment URL.</p></div>";
-         return;
-      }
-      
-      document.getElementById('m-rate').oninput = function() { document.getElementById('rate-val').innerText = this.value; }
-      
-      let userEmail = '<?= typeof activeEmail !== "undefined" ? activeEmail : "" ?>';
-      if (userEmail.startsWith('<?')) userEmail = ""; // Local development fallback
-      
-      if (userEmail) {
-         document.getElementById('login-btn').innerText = "Authenticating Workspace...";
-         const handleAutoLogin = (res) => {
-           if(res.error) {
-             document.getElementById('msg').innerText = "Unauthorized Google Account: " + userEmail;
-             loadManualLogin();
-           } else {
-             finishLogin(res);
-           }
-         };
-         runAPI.withSuccessHandler(handleAutoLogin).autoLogin(userEmail);
-      } else {
-         loadManualLogin();
-      }
-    };
-    
-    function loadManualLogin() {
-      const handleStaffList = (list) => {
-        const sel = document.getElementById('login-name');
-        sel.innerHTML = '<option value="" disabled selected>-- Select Name --</option>';
-        if(!list || list.length === 0) sel.innerHTML += '<option disabled>No Staff Found</option>';
-        else list.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
-      }
-      
-      const handleStaffError = (err) => {
-        document.getElementById('login-name').innerHTML = `<option disabled selected>Error: ${err.message}</option>`;
-        document.getElementById('msg').innerText = "Backend missing 'StaffCredentials' sheet or setup.";
-      };
-
-      runAPI.withFailureHandler(handleStaffError).withSuccessHandler(handleStaffList).getStaffList();
+    // ============================================================
+    // API HELPERS — fetch() replaces google.script.run
+    // ============================================================
+    async function apiGet(action, params = {}) {
+      const query = new URLSearchParams({ action, ...params }).toString();
+      const res = await fetch(`${API_URL}?${query}`);
+      return res.json();
     }
 
-    function login() {
+    async function apiPost(action, body = {}) {
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action, ...body })
+      });
+      return res.json();
+    }
+
+    // ============================================================
+    // STATE
+    // ============================================================
+    let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
+
+    // ============================================================
+    // INIT
+    // ============================================================
+    window.onload = async () => {
+      document.getElementById('m-rate').oninput = function() {
+        document.getElementById('rate-val').innerText = this.value;
+      };
+
+      // 3D tilt effect on login card
+      document.addEventListener('mousemove', (e) => {
+        const card = document.getElementById('login-card');
+        if (!card || document.getElementById('login-view').classList.contains('hidden')) return;
+        const xAxis = (window.innerWidth / 2 - e.pageX) / 35;
+        const yAxis = (window.innerHeight / 2 - e.pageY) / 35;
+        card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+      });
+
+      try {
+        const list = await apiGet('getStaffList');
+        const sel = document.getElementById('login-name');
+        sel.innerHTML = '<option value="" disabled selected>-- Select Name --</option>';
+        if (!list || list.length === 0) {
+          sel.innerHTML += '<option disabled>No Staff Found — Admin run Setup first</option>';
+        } else {
+          list.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
+        }
+      } catch (err) {
+        document.getElementById('msg').innerText = "Cannot reach backend. Check API URL.";
+      }
+    };
+
+    // ============================================================
+    // LOGIN
+    // ============================================================
+    async function login() {
       const name = document.getElementById('login-name').value;
       const pass = document.getElementById('login-pass').value;
-      const btn = document.getElementById('login-btn');
-      
-      if(!name) { document.getElementById('msg').innerText = "Please select a name."; return; }
-      
+      const btn  = document.getElementById('login-btn');
+      const msg  = document.getElementById('msg');
+
+      if (!name) { msg.innerText = "Please select a name."; return; }
+
       btn.innerText = "Verifying Identity...";
-      
-      const handleLogin = (res) => {
-        if(res.error) {
-          document.getElementById('msg').innerText = res.error;
-          document.getElementById('login-btn').innerText = "Initialize Access";
+      msg.innerText = "";
+
+      try {
+        const res = await apiPost('login', { name, password: pass });
+        if (res.error) {
+          msg.innerText = res.error;
+          btn.innerText = "Initialize Access";
         } else {
           finishLogin(res);
         }
+      } catch (err) {
+        msg.innerText = "Connection error. Try again.";
+        btn.innerText = "Initialize Access";
       }
-
-      runAPI.withSuccessHandler(handleLogin).loginUser(name, pass);
     }
 
     function finishLogin(res) {
-        if (res.role === 'admin') {
-          document.getElementById('login-view').classList.add('hidden');
-          document.getElementById('top-nav').classList.remove('hidden');
-          document.getElementById('admin-view').classList.remove('hidden');
-          document.getElementById('nav-actions').classList.remove('hidden');
-          loadAdminData();
-        } else {
-          document.getElementById('login-view').classList.add('hidden');
-          document.getElementById('top-nav').classList.remove('hidden');
-          document.getElementById('staff-view').classList.remove('hidden');
-          document.getElementById('nav-actions').classList.remove('hidden');
-          document.getElementById('s-name').innerText = res.name;
-          loadStaffData();
-        }
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('top-nav').classList.remove('hidden');
+      document.getElementById('nav-actions').classList.remove('hidden');
+
+      if (res.role === 'admin') {
+        document.getElementById('admin-view').classList.remove('hidden');
+        loadAdminData();
+      } else {
+        document.getElementById('staff-view').classList.remove('hidden');
+        document.getElementById('s-name').innerText = res.name;
+        loadStaffData(res.name);
+      }
     }
 
     function logout() { location.reload(); }
 
-    function loadStaffData() {
-      const name = document.getElementById('s-name').innerText;
+    // ============================================================
+    // STAFF DATA
+    // ============================================================
+    async function loadStaffData(name) {
       document.getElementById('task-list').innerHTML = '<div class="text-center text-gray-500 py-8 animate-pulse font-mono">Fetching intelligence from cloud...</div>';
-      
-      const handleData = (res) => {
+      try {
+        const res = await apiGet('getStaffTasks', { name });
         document.getElementById('s-prog').innerText = res.progress + '%';
         document.getElementById('prog-bar').style.width = res.progress + '%';
         allTasks = res.tasks;
         renderTasks(allTasks);
+      } catch (err) {
+        document.getElementById('task-list').innerHTML = '<div class="text-center text-red-400 py-8">Failed to load tasks. Check connection.</div>';
       }
-
-      runAPI.withSuccessHandler(handleData).getStaffTasks(name);
     }
 
     function renderTasks(tasks) {
-      const activeTask = tasks.find(t => t.row === activeTaskId);
-      const availableTasks = tasks.filter(t => t.row !== activeTaskId);
-      
+      const activeTask      = tasks.find(t => t.row === activeTaskId);
+      const availableTasks  = tasks.filter(t => t.row !== activeTaskId);
+
       const activeContainer = document.getElementById('active-task-container');
-      if (activeTask) {
-        activeContainer.innerHTML = generateTaskHTML(activeTask, true);
-      } else {
-        activeContainer.innerHTML = '<div class="text-center text-gray-500 py-6 border border-dashed border-white/10 rounded-xl">No active task selected. Please select a task from your available batch below.</div>';
-      }
-      
+      activeContainer.innerHTML = activeTask
+        ? generateTaskHTML(activeTask, true)
+        : '<div class="text-center text-gray-500 py-6 border border-dashed border-white/10 rounded-xl">No active task selected. Pick one below.</div>';
+
       const listContainer = document.getElementById('task-list');
       if (availableTasks.length === 0 && !activeTask) {
-        listContainer.innerHTML = '<div class="text-center py-6 text-green-400 font-medium bg-green-500/10 rounded-xl border border-green-500/20">All tasks completed. Excellent work.</div>';
+        listContainer.innerHTML = '<div class="text-center py-6 text-green-400 font-medium bg-green-500/10 rounded-xl border border-green-500/20">All tasks completed. Excellent work! 🎉</div>';
       } else if (availableTasks.length === 0) {
-        listContainer.innerHTML = '<div class="text-center text-gray-500 py-4">No other available tasks in this batch.</div>';
+        listContainer.innerHTML = '<div class="text-center text-gray-500 py-4">No other tasks in this batch.</div>';
       } else {
         listContainer.innerHTML = availableTasks.map(t => generateTaskHTML(t, false)).join('');
       }
     }
 
     function generateTaskHTML(t, isActive) {
-      const isRoutine = t.category.includes('Routine');
+      const isRoutine  = t.category && t.category.includes('Routine');
       const colorClass = isRoutine ? 'blue' : 'purple';
-      const bgClass = isRoutine ? 'bg-blue-500/20 text-blue-400 border-blue-500/20' : 'bg-purple-500/20 text-purple-400 border-purple-500/20';
-      
+      const bgClass    = isRoutine
+        ? 'bg-blue-500/20 text-blue-400 border-blue-500/20'
+        : 'bg-purple-500/20 text-purple-400 border-purple-500/20';
+
       let linkBtn = '';
-      if(t.link && t.link.length > 4 && t.link !== 'None') {
-         const url = t.link.startsWith('http') ? t.link : `https://www.youtube.com/results?search_query=${encodeURIComponent(t.link)}`;
-         linkBtn = `<a href="${url}" target="_blank" class="text-[10px] bg-yellow-500/10 text-yellow-400/90 hover:text-yellow-400 px-3 py-1.5 rounded border border-yellow-500/20 hover:bg-yellow-500/20 transition-colors uppercase font-bold tracking-widest flex items-center gap-1 w-max">📺 Watch Guide</a>`;
+      if (t.link && t.link.length > 4 && t.link !== 'None') {
+        const url = t.link.startsWith('http')
+          ? t.link
+          : `https://www.youtube.com/results?search_query=${encodeURIComponent(t.link)}`;
+        linkBtn = `<a href="${url}" target="_blank" class="text-[10px] bg-yellow-500/10 text-yellow-400 hover:text-yellow-300 px-3 py-1.5 rounded border border-yellow-500/20 hover:bg-yellow-500/20 transition-colors uppercase font-bold tracking-widest flex items-center gap-1 w-max">📺 Watch Guide</a>`;
       }
 
-      const safeDesc = t.desc.replace(/'/g, "").replace(/"/g, "");
-      
-      let actionBtn = '';
-      if (isActive) {
-        actionBtn = `<button onclick="openModal(${t.row}, '${safeDesc}')" class="text-xs w-full sm:w-auto bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500 hover:text-white px-5 py-2.5 rounded-lg font-bold transition-all flex items-center justify-center sm:justify-end gap-2 group-hover:bg-green-500/20 shadow-lg shadow-green-500/20 scale-[1.02]">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg> Completing task
-                </button>`;
-      } else {
-        actionBtn = `<button onclick="setActiveTask(${t.row})" class="text-xs w-full sm:w-auto bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white px-5 py-2 rounded-lg font-bold transition-all flex items-center justify-center sm:justify-end gap-2 group-hover:bg-blue-500/20">Select as Active</button>`;
-      }
+      const safeDesc  = (t.desc || '').replace(/'/g, "").replace(/"/g, "");
+      const outerBorder = isActive ? 'border-blue-500/50 border-l-blue-500' : `border-white/5 border-l-${colorClass}-500`;
+      const actionBtn   = isActive
+        ? `<button onclick="openModal(${t.row}, '${safeDesc}')" class="text-xs w-full sm:w-auto bg-green-500/10 text-green-400 border border-green-500/20 hover:bg-green-500 hover:text-white px-5 py-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20">✅ Mark Complete</button>`
+        : `<button onclick="setActiveTask(${t.row})" class="text-xs w-full sm:w-auto bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500 hover:text-white px-5 py-2 rounded-lg font-bold transition-all flex items-center justify-center gap-2">Select Active</button>`;
 
-      const outerClass = isActive 
-        ? `bg-surface border border-blue-500/50 border-l-4 border-l-blue-500 rounded-xl p-5 hover:bg-white/[0.02] transition-colors relative group`
-        : `bg-surface border border-white/5 border-l-4 border-l-${colorClass}-500 rounded-xl p-5 hover:bg-white/[0.02] transition-colors relative group`;
       return `
-        <div class="${outerClass}">
+        <div class="bg-[#111827] border ${outerBorder} border-l-4 rounded-xl p-5 hover:bg-white/[0.02] transition-colors">
           <div class="flex flex-col sm:flex-row justify-between sm:items-start gap-4">
-            <div class="flex-1 w-full">
+            <div class="flex-1">
               <div class="flex items-center gap-3 mb-2">
-                 <span class="text-[10px] text-gray-500 font-mono font-bold tracking-widest">#${t.id ? t.id.split('-').pop() : '00'}</span>
-                 <span class="text-[10px] text-gray-500 font-medium">${t.date}</span>
+                <span class="text-[10px] text-gray-500 font-mono font-bold">#${t.id ? String(t.id).split('-').pop() : '00'}</span>
+                <span class="text-[10px] text-gray-500">${t.date || ''}</span>
               </div>
-              <div class="mb-3">
-                 <span class="${bgClass} text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider border shadow-[0_0_10px_rgba(0,0,0,0.2)]">💼 ${t.category}</span>
-              </div>
-              <h3 class="text-sm font-medium text-gray-200 mt-1">${t.desc}</h3>
+              <span class="${bgClass} text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-wider border inline-block mb-2">💼 ${t.category || 'Task'}</span>
+              <h3 class="text-sm font-medium text-gray-200">${t.desc || ''}</h3>
             </div>
-            <div class="flex flex-col items-end gap-3 justify-between w-full sm:w-auto h-full min-h-[80px]">
+            <div class="flex flex-col items-end gap-3 w-full sm:w-auto">
               <div>${linkBtn}</div>
               ${actionBtn}
             </div>
@@ -470,8 +430,8 @@
 
     function filterTasks(type) {
       currentFilter = type;
-      if(type === 'All') renderTasks(allTasks);
-      else renderTasks(allTasks.filter(t => t.category.includes(type) || t.row === activeTaskId));
+      if (type === 'All') renderTasks(allTasks);
+      else renderTasks(allTasks.filter(t => t.category && t.category.includes(type)));
     }
 
     function openModal(row, title) {
@@ -479,148 +439,132 @@
       document.getElementById('m-title').innerText = title;
       document.getElementById('modal').classList.remove('hidden');
     }
-    
-    function closeModal() { 
-      document.getElementById('modal').classList.add('hidden'); 
+
+    function closeModal() {
+      document.getElementById('modal').classList.add('hidden');
       document.getElementById('m-rem').value = '';
       document.getElementById('m-rate').value = 5;
       document.getElementById('rate-val').innerText = '5';
     }
-    
-    function confirmDone() {
-      const r = document.getElementById('m-rate').value;
-      const rem = document.getElementById('m-rem').value;
+
+    async function confirmDone() {
+      const rating  = document.getElementById('m-rate').value;
+      const remarks = document.getElementById('m-rem').value;
+      const doneRow = currentRow;
       closeModal();
-      
-      if (activeTaskId === currentRow) {
-         activeTaskId = null;
-      }
-      
-      allTasks = allTasks.filter(t => t.row !== currentRow); 
+
+      if (activeTaskId === doneRow) activeTaskId = null;
+      allTasks = allTasks.filter(t => t.row !== doneRow);
       filterTasks(currentFilter);
-      
-      runAPI.markTaskDone(currentRow, r, rem);
+
+      try {
+        await apiPost('markTaskDone', { row: doneRow, rating, remarks });
+      } catch (err) {
+        console.error("Failed to sync task done:", err);
+      }
     }
 
-    // 3D Parallax Tilt Effect for the login card
-    document.addEventListener('mousemove', (e) => {
-      const card = document.getElementById('login-card');
-      if (!card || document.getElementById('login-view').classList.contains('hidden')) return;
-      
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 35;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 35;
-      
-      card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-    });
-
-    document.addEventListener('mouseleave', () => {
-      const card = document.getElementById('login-card');
-      if (!card || document.getElementById('login-view').classList.contains('hidden')) return;
-      card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-      card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
-    });
-    
-    // Reset transition
-    document.addEventListener('mouseenter', () => {
-      const card = document.getElementById('login-card');
-      if (!card || document.getElementById('login-view').classList.contains('hidden')) return;
-      card.style.transition = 'none';
-      setTimeout(() => { card.style.transition = 'transform 0.1s ease'; }, 10);
-    });
-
-    function loadAdminData() {
-      const handleAdmin = (list) => {
-        const div = document.getElementById('admin-list');
+    // ============================================================
+    // ADMIN DATA
+    // ============================================================
+    async function loadAdminData() {
+      document.getElementById('admin-list').innerHTML = '<div class="text-center text-gray-400 animate-pulse py-4">Loading staff data...</div>';
+      try {
+        const list = await apiGet('getAdminSummary');
+        const div  = document.getElementById('admin-list');
         div.innerHTML = "";
+        if (!list || list.length === 0) {
+          div.innerHTML = '<div class="text-center text-gray-500 py-4">No staff data found. Import tasks first.</div>';
+          return;
+        }
         list.forEach(s => {
-          const isDanger = s.pct < 50;
-          const colorText = isDanger ? 'text-orange-400' : 'text-green-400';
-          const colorBg = isDanger ? 'bg-orange-400/10' : 'bg-green-400/10';
-          
+          const isDanger   = s.pct < 50;
+          const colorText  = isDanger ? 'text-orange-400' : 'text-green-400';
+          const colorBg    = isDanger ? 'bg-orange-400/10' : 'bg-green-400/10';
           div.innerHTML += `
             <div class="glass-card border border-white/5 p-6 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-white/[0.02] transition-colors mb-4 gap-4">
               <div>
                 <h3 class="font-bold text-xl text-white mb-1">${s.name}</h3>
                 <div class="flex items-center gap-2">
-                   <span class="text-xs bg-surface border border-white/10 px-2 py-1 rounded text-gray-400 font-mono">${s.done} / ${s.total}</span>
-                   <span class="text-xs text-gray-500 uppercase tracking-wider">Completed</span>
+                  <span class="text-xs bg-[#111827] border border-white/10 px-2 py-1 rounded text-gray-400 font-mono">${s.done} / ${s.total}</span>
+                  <span class="text-xs text-gray-500 uppercase tracking-wider">Completed</span>
                 </div>
               </div>
-              <div class="text-right flex items-center lg:block gap-4 w-full sm:w-auto mt-2 sm:mt-0 pt-4 sm:pt-0 border-t border-white/5 sm:border-0">
-                <div class="flex-1 sm:hidden h-2 bg-surface rounded-full overflow-hidden"><div style="width: ${s.pct}%" class="h-full bg-blue-500"></div></div>
-                <h2 class="text-3xl font-bold ${colorText} ${colorBg} px-4 py-1 rounded-lg">${s.pct}%</h2>
-              </div>
+              <h2 class="text-3xl font-bold ${colorText} ${colorBg} px-4 py-1 rounded-lg">${s.pct}%</h2>
             </div>`;
         });
-      };
-      
-      if(runAPI.withSuccessHandler) runAPI.withSuccessHandler(handleAdmin).getAdminSummary();
-      else handleAdmin(MOCK_GAS.getAdminSummary());
+      } catch (err) {
+        document.getElementById('admin-list').innerHTML = '<div class="text-center text-red-400 py-4">Failed to load admin data.</div>';
+      }
     }
 
-    function runImport() {
+    // ============================================================
+    // IMPORT
+    // ============================================================
+    async function runImport() {
       const name = document.getElementById('imp-name').value;
       const role = document.getElementById('imp-role').value;
       const date = document.getElementById('imp-date').value;
       const json = document.getElementById('imp-json').value;
-      const btn = document.getElementById('imp-btn');
-      const msg = document.getElementById('imp-msg');
-      
-      if(!name || !role || !date || !json) {
-         msg.innerText = "⚠️ Please fill all fields before injecting.";
-         msg.className = "text-center text-xs mt-3 h-4 font-bold text-red-400";
-         return;
+      const btn  = document.getElementById('imp-btn');
+      const msg  = document.getElementById('imp-msg');
+
+      if (!name || !role || !date || !json) {
+        msg.innerText = "⚠️ Please fill all fields.";
+        msg.className = "text-center text-xs mt-3 font-bold text-red-400 h-4";
+        return;
       }
-      
-      btn.innerText = "Processing Validation and Import...";
+
+      btn.innerText = "Importing...";
       msg.innerText = "";
-      
-      const handleRes = (res) => {
-         btn.innerText = "Inject Tasks to Database";
-         msg.innerText = res;
-         msg.className = "text-center text-xs mt-3 h-4 font-bold text-green-400";
-         document.getElementById('imp-json').value = ""; // Clear on success
-         loadAdminData(); // Refresh progress stats
-      };
-      
-      runAPI.withFailureHandler(err => {
-         btn.innerText = "Inject Tasks to Database";
-         msg.innerText = "Error: " + err.message;
-         msg.className = "text-center text-xs mt-3 h-4 font-bold text-red-400";
-      }).withSuccessHandler(handleRes).processJSON(json, date, name, role);
+
+      try {
+        const res = await apiPost('processJSON', { json, date, name, role });
+        btn.innerText = "Inject Tasks to Database";
+        if (res.error) {
+          msg.innerText = "Error: " + res.error;
+          msg.className = "text-center text-xs mt-3 font-bold text-red-400 h-4";
+        } else {
+          msg.innerText = res.message || "✅ Import successful!";
+          msg.className = "text-center text-xs mt-3 font-bold text-green-400 h-4";
+          document.getElementById('imp-json').value = "";
+          loadAdminData();
+        }
+      } catch (err) {
+        btn.innerText = "Inject Tasks to Database";
+        msg.innerText = "Connection error: " + err.message;
+        msg.className = "text-center text-xs mt-3 font-bold text-red-400 h-4";
+      }
     }
 
-    function runDeleteBatch() {
+    // ============================================================
+    // DELETE BATCH
+    // ============================================================
+    async function runDeleteBatch() {
       const batchId = document.getElementById('del-batch-id').value;
-      const btn = document.getElementById('del-btn');
-      const msg = document.getElementById('del-msg');
-      
+      const btn     = document.getElementById('del-btn');
+      const msg     = document.getElementById('del-msg');
+
       if (!batchId) {
-         msg.innerText = "⚠️ Please enter a Batch ID.";
-         msg.className = "text-xs mt-3 h-4 font-bold text-red-400";
-         return;
+        msg.innerText = "⚠️ Enter a Batch ID.";
+        msg.className = "text-xs mt-3 font-bold text-red-400 h-4";
+        return;
       }
-      
-      if (!confirm("Are you sure you want to permanently delete all tasks associated with batch: " + batchId + "?")) {
-          return;
-      }
-      
+      if (!confirm("Delete all tasks in batch: " + batchId + "?")) return;
+
       btn.innerText = "Deleting...";
-      msg.innerText = "";
-      
-      const handleRes = () => {
-         btn.innerText = "Delete Archive";
-         msg.innerText = "✅ Batch deleted successfully.";
-         msg.className = "text-xs mt-3 h-4 font-bold text-green-400";
-         document.getElementById('del-batch-id').value = "";
-         loadAdminData(); // Refresh summary stats
-      };
-      
-      runAPI.withFailureHandler(err => {
-         btn.innerText = "Delete Archive";
-         msg.innerText = "Error: " + err.message;
-         msg.className = "text-xs mt-3 h-4 font-bold text-red-400";
-      }).withSuccessHandler(handleRes).deleteBatch(batchId);
+      try {
+        await apiPost('deleteBatch', { batchId });
+        btn.innerText = "Delete Archive";
+        msg.innerText = "✅ Batch deleted.";
+        msg.className = "text-xs mt-3 font-bold text-green-400 h-4";
+        document.getElementById('del-batch-id').value = "";
+        loadAdminData();
+      } catch (err) {
+        btn.innerText = "Delete Archive";
+        msg.innerText = "Error: " + err.message;
+        msg.className = "text-xs mt-3 font-bold text-red-400 h-4";
+      }
     }
   </script>
 </body>
