@@ -29,6 +29,6 @@ Unlike standard Apps Script apps, SkillSync AI uses a custom Fetch-based bridge 
 🔗 Project Ecosystem
 Live Preview: https://sharathstash21-design.github.io/SkillSync-AI/
 
-Backend API: [PASTE_YOUR_APPS_SCRIPT_EXEC_LINK_HERE]
+Backend API: https://script.google.com/macros/s/AKfycbyIydXwNXhDlhRNbSCa_KJCCZgFrGE57KpDrUnVisO7amtt63PWunIIicFjBTVyGy6u/exec
 
 Database (View Only): https://docs.google.com/spreadsheets/d/1NnsRW4WuKNObuZ3ZK-hqjmA3Z2iRLUMmuTHa5VPxXT8/edit?gid=130902396#gid=130902396
