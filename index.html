@@ -295,8 +295,11 @@
   <script>
     let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
 
-    // Production Google Apps Script REST API Connection
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzX2PfS7veNmBvyEYTDB2g6RiEIu-gqH4zj02pWP2slGCeSr-VM4Ayg3w3m_oByPDRe/exec";
+    // Dynamic Google Apps Script REST API Connection
+    let WEB_APP_URL = '<?= typeof scriptUrl !== "undefined" ? scriptUrl : "" ?>';
+    if (WEB_APP_URL.startsWith("<?") || !WEB_APP_URL) {
+        WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyIydXwNXhDlhRNbSCa_KJCCZgFrGE57KpDrUnVisO7amtt63PWunIIicFjBTVyGy6u/exec";
+    }
     
     // Polyfill to transition google.script.run code into standard decoupled fetch calls
     const runAPI = {

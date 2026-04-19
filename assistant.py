@@ -65,7 +65,7 @@ class AntigravityMonitor:
         self.url_entry = ttk.Entry(url_frame, font=("Inter", 10), width=60)
         self.url_entry.pack(fill=tk.X, ipady=4)
         # The user's live Apps Script URL
-        self.url_entry.insert(0, "https://script.google.com/macros/s/AKfycbzX2PfS7veNmBvyEYTDB2g6RiEIu-gqH4zj02pWP2slGCeSr-VM4Ayg3w3m_oByPDRe/exec")
+        self.url_entry.insert(0, "https://script.google.com/macros/s/AKfycbyIydXwNXhDlhRNbSCa_KJCCZgFrGE57KpDrUnVisO7amtt63PWunIIicFjBTVyGy6u/exec")
         
         # Data Viewer
         self.progress_label = ttk.Label(main_frame, text="Overall Completion: 0%", font=("Inter", 26, "bold"), foreground="#10B981")
