@@ -7,9 +7,8 @@ function setupDatabase() {
   
   // Define required sheets and their corresponding headers
   const requiredSheets = {
-    'Staff': ['Staff ID', 'Name', 'Role', 'Email', 'Active'],
-    'Tasks': ['Task ID', 'Staff ID', 'Task Name', 'Description', 'Status', 'Due Date'],
-    'LearningPaths': ['Path ID', 'Staff ID', 'Original Prompt', 'AI Plan Data', 'Created At']
+    'StaffCredentials': ['Staff Name', 'Password'],
+    'DailyTracker': ['Date', 'Staff Name', 'Role', 'Category', 'Task Description', 'Status', 'Rating', 'Remarks', 'Task ID', 'Resources', 'Batch ID']
   };
 
   for (const sheetName in requiredSheets) {

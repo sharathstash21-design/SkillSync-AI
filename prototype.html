@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f8fafc; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="flex flex-col items-center min-h-screen">
+
+  <div id="login-view" class="w-full max-w-sm bg-white p-8 rounded-2xl shadow-xl mt-20">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-slate-800">🦁 NUERA Staff</h1>
+      <p class="text-xs text-slate-400">Task Portal</p>
+    </div>
+    <label class="text-xs font-bold text-slate-500 uppercase">Select Name</label>
+    <select id="login-name" class="w-full p-3 border rounded-lg bg-slate-50 mb-3 text-sm font-bold">
+       <option>Loading...</option>
+    </select>
+    
+    <label class="text-xs font-bold text-slate-500 uppercase">Password</label>
+    <input type="password" id="login-pass" class="w-full p-3 border rounded-lg bg-slate-50 mb-6" placeholder="Enter PIN">
+    
+    <button onclick="login()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700">LOGIN</button>
+    <p id="msg" class="text-center text-red-500 text-xs mt-3"></p>
+  </div>
+
+  <div id="staff-view" class="hidden w-full max-w-md p-4">
+    <div class="flex justify-between items-center mb-4 bg-white p-3 rounded-xl shadow-sm">
+      <div><h2 class="text-sm font-bold text-slate-800"><span id="s-name"></span></h2><p class="text-[10px] text-slate-400" id="today-date"></p></div>
+      <button onclick="location.reload()" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-xs font-bold">Logout</button>
+    </div>
+    <div class="bg-slate-800 rounded-xl p-4 text-white shadow-lg mb-4 flex justify-between items-center">
+      <div><p class="text-slate-400 text-[10px] uppercase font-bold">Progress</p><h1 class="text-3xl font-bold"><span id="s-prog">0</span>%</h1></div>
+      <div class="text-4xl">🚀</div>
+    </div>
+    <div class="flex gap-2 mb-4">
+      <button onclick="filterTasks('All')" class="flex-1 py-2 bg-white rounded-lg text-xs font-bold border">All</button>
+      <button onclick="filterTasks('Routine')" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold border border-blue-100">Routine</button>
+      <button onclick="filterTasks('Learning')" class="flex-1 py-2 bg-purple-50 text-purple-600 rounded-lg text-xs font-bold border border-purple-100">Learning</button>
+    </div>
+    <div id="task-list" class="space-y-4 pb-24"></div>
+  </div>
+
+  <div id="admin-view" class="hidden w-full max-w-md p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-lg font-bold text-slate-800">🦁 Admin Panel</h2>
+      <button onclick="location.reload()" class="bg-white p-2 rounded-lg shadow text-xs font-bold text-red-400">Logout</button>
+    </div>
+    <div id="admin-list" class="space-y-3"></div>
+  </div>
+
+  <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-end sm:items-center justify-center z-50">
+    <div class="bg-white w-full max-w-sm p-6 rounded-t-2xl sm:rounded-2xl shadow-2xl animate-slide-up">
+      <div class="flex justify-between mb-4">
+        <div><h3 class="font-bold text-lg">Complete Task?</h3><p id="m-title" class="text-xs text-slate-500"></p></div>
+        <button onclick="closeModal()" class="text-2xl font-bold text-slate-400">&times;</button>
+      </div>
+      <label class="text-[10px] font-bold text-slate-400 uppercase">Rating (1-5)</label>
+      <div class="flex items-center gap-3 mb-4"><input type="range" id="m-rate" min="1" max="5" value="5" class="w-full accent-green-500"><span id="rate-val" class="font-bold text-green-600">5</span></div>
+      <label class="text-[10px] font-bold text-slate-400 uppercase">Remarks</label>
+      <textarea id="m-rem" class="w-full border rounded-lg p-3 text-sm h-20 mb-4"></textarea>
+      <button onclick="confirmDone()" class="w-full py-3.5 text-white font-bold bg-green-600 rounded-xl">✅ Mark Done</button>
+    </div>
+  </div>
+
+  <script>
+    let currentRow = null, allTasks = [];
+
+    // INIT
+    window.onload = () => {
+      document.getElementById('today-date').innerText = new Date().toDateString();
+      google.script.run.withSuccessHandler(list => {
+        const sel = document.getElementById('login-name');
+        sel.innerHTML = '<option value="" disabled selected>-- Select Name --</option>';
+        if(list.length === 0) sel.innerHTML += '<option>No Staff Found</option>';
+        else list.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
+      }).getStaffList();
+
+      document.getElementById('m-rate').oninput = function() { document.getElementById('rate-val').innerText = this.value; }
+    };
+
+    function login() {
+      const name = document.getElementById('login-name').value;
+      const pass = document.getElementById('login-pass').value;
+      document.querySelector('button').innerText = "Verifying...";
+      google.script.run.withSuccessHandler(res => {
+        if(res.error) {
+          document.getElementById('msg').innerText = res.error;
+          document.querySelector('button').innerText = "LOGIN";
+        } else if (res.role === 'admin') {
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('admin-view').classList.remove('hidden');
+          loadAdminData();
+        } else {
+          document.getElementById('login-view').classList.add('hidden');
+          document.getElementById('staff-view').classList.remove('hidden');
+          document.getElementById('s-name').innerText = res.name;
+          loadStaffData(res.name);
+        }
+      }).loginUser(name, pass);
+    }
+
+    function loadStaffData(name) {
+      document.getElementById('task-list').innerHTML = '<div class="text-center text-slate-400 mt-10">Loading...</div>';
+      google.script.run.withSuccessHandler(res => {
+        document.getElementById('s-prog').innerText = res.progress;
+        allTasks = res.tasks;
+        renderTasks(allTasks);
+      }).getStaffTasks(name);
+    }
+
+    function renderTasks(tasks) {
+      const div = document.getElementById('task-list');
+      div.innerHTML = "";
+      if(tasks.length === 0) return div.innerHTML = '<div class="text-center mt-10 text-slate-400">All Done! 🎉</div>';
+      
+      tasks.forEach(t => {
+        const isRoutine = t.category.includes('Routine');
+        const color = isRoutine ? 'blue' : 'purple';
+        const icon = isRoutine ? '💼 Routine' : '📚 Learning';
+        let linkBtn = '';
+        if(t.link && t.link.length > 4 && t.link !== 'None') {
+           const url = t.link.startsWith('http') ? t.link : `https://www.youtube.com/results?search_query=${encodeURIComponent(t.link)}`;
+           linkBtn = `<a href="${url}" target="_blank" class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-[10px] font-bold border border-yellow-200">📺 Watch Guide</a>`;
+        }
+
+        div.innerHTML += `
+          <div class="bg-white rounded-r-xl rounded-l-md shadow-sm border border-slate-200 border-l-[6px] border-l-${color}-500 p-4">
+            <div class="flex justify-between items-start mb-2">
+              <span class="mono text-[10px] text-slate-400 font-bold">#${t.id.split('-').pop()}</span>
+              <span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${t.date}</span>
+            </div>
+            <div class="mb-4">
+              <span class="inline-block bg-${color}-100 text-${color}-700 text-[10px] font-bold px-2 py-0.5 rounded mb-2">${icon}</span>
+              <p class="text-sm font-bold text-slate-800">${t.desc}</p>
+            </div>
+            <div class="flex justify-between items-center mt-3 pt-3 border-t border-slate-100">
+              <div>${linkBtn}</div>
+              <button onclick="openModal(${t.row}, '${t.desc.replace(/'/g,"")}')" class="bg-green-50 text-green-700 px-4 py-1.5 rounded-lg text-xs font-bold border border-green-200">✅ Done</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    function filterTasks(type) {
+      if(type === 'All') renderTasks(allTasks);
+      else renderTasks(allTasks.filter(t => t.category.includes(type)));
+    }
+
+    function openModal(row, title) {
+      currentRow = row;
+      document.getElementById('m-title').innerText = title;
+      document.getElementById('modal').classList.remove('hidden');
+    }
+    function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+    
+    function confirmDone() {
+      const r = document.getElementById('m-rate').value;
+      const rem = document.getElementById('m-rem').value;
+      closeModal();
+      allTasks = allTasks.filter(t => t.row !== currentRow); // Optimistic update
+      renderTasks(allTasks);
+      google.script.run.markTaskDone(currentRow, r, rem);
+    }
+
+    function loadAdminData() {
+      document.getElementById('admin-list').innerHTML = '<div class="text-center text-slate-400">Loading...</div>';
+      google.script.run.withSuccessHandler(list => {
+        const div = document.getElementById('admin-list');
+        div.innerHTML = "";
+        list.forEach(s => {
+          div.innerHTML += `
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+              <div><h3 class="font-bold text-slate-700">${s.name}</h3><p class="text-xs text-slate-400">${s.done}/${s.total} Tasks</p></div>
+              <div class="text-right"><h2 class="text-xl font-bold ${s.pct<50?'text-orange-500':'text-green-500'}">${s.pct}%</h2></div>
+            </div>`;
+        });
+      }).getAdminSummary();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Data Generator | NUERA ERP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #111827; /* Dark grayish-blue */
+    }
+    .form-input {
+      background-color: #0f172a;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+    .btn-generate {
+      background-color: #10b981;
+      transition: background-color 0.2s;
+    }
+    .btn-generate:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 text-gray-200">
+
+  <div class="bg-[#1e293b] rounded-2xl shadow-2xl p-8 w-full max-w-4xl border border-gray-700">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-blue-400 flex items-center gap-2">
+          <span class="text-orange-500">⚡</span> JSON Data Generator
+        </h1>
+        <p class="text-gray-400 mt-1 font-medium">For NUERA ERP Import System</p>
+      </div>
+      <!-- Model Toggle -->
+      <div class="flex bg-[#0f172a] rounded-lg p-1 border border-gray-700">
+        <button class="bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm font-medium">ChatGPT</button>
+        <button class="text-gray-400 px-4 py-1.5 rounded-md text-sm font-medium hover:text-white transition-colors">Gemini</button>
+      </div>
+    </div>
+
+    <!-- Form Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      
+      <!-- Staff Name -->
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">Staff Name</label>
+        <input type="text" id="staffName" class="form-input w-full rounded-lg px-4 py-3 text-sm focus:outline-none" placeholder="Priya" value="Priya">
+      </div>
+
+      <!-- Plan Duration -->
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">Plan Duration</label>
+        <select id="planDuration" class="form-input w-full rounded-lg px-4 py-3 text-sm font-medium appearance-none">
+          <option>1 Week (Testing)</option>
+          <option>2 Weeks</option>
+          <option>1 Month</option>
+        </select>
+      </div>
+
+      <!-- Role -->
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">Role</label>
+        <input type="text" id="role" class="form-input w-full rounded-lg px-4 py-3 text-sm focus:outline-none" placeholder="Receptionist" value="Receptionist">
+      </div>
+
+      <!-- Tasks Per Day -->
+      <div>
+        <label class="block text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">Tasks Per Day</label>
+        <select id="tasksPerDay" class="form-input w-full rounded-lg px-4 py-3 text-sm font-medium appearance-none">
+          <option>Detailed (5-8 Tasks - More Ticks)</option>
+          <option>Standard (3-5 Tasks)</option>
+        </select>
+      </div>
+      
+    </div>
+
+    <!-- Focus Area -->
+    <div class="mb-8">
+      <label class="block text-xs font-bold text-gray-500 mb-2 tracking-wide uppercase">Focus Area</label>
+      <textarea id="focusArea" rows="3" class="form-input w-full rounded-lg px-4 py-3 text-sm focus:outline-none resize-none" placeholder="e.g. Needs to learn Tally, improve Email writing...">e.g. Needs to learn Tally, improve Email writing...</textarea>
+    </div>
+
+    <!-- Generate Button -->
+    <button onclick="generatePrompt()" class="btn-generate w-full text-white font-bold py-4 rounded-xl text-lg mb-8 tracking-wider shadow-lg flex justify-center items-center gap-2 hover:-translate-y-0.5 transition-transform">
+      <span class="opacity-80">{</span> GENERATE_JSON_PROMPT <span class="opacity-80">}</span>
+    </button>
+
+    <!-- Output Area -->
+    <div class="relative bg-[#0f172a] rounded-xl border border-gray-700 p-4">
+      <div class="flex justify-between items-center mb-2">
+         <label class="block text-xs font-bold text-gray-500 tracking-wide uppercase">System Prompt Output</label>
+         <button onclick="copyPrompt()" class="bg-[#334155] hover:bg-gray-600 text-white text-xs px-4 py-1.5 rounded-md transition-colors font-medium">Copy</button>
+      </div>
+      <textarea id="promptOutput" rows="8" class="w-full bg-transparent text-blue-300 text-sm focus:outline-none resize-none font-mono" readonly></textarea>
+    </div>
+
+  </div>
+
+  <script>
+    function generatePrompt() {
+      const name = document.getElementById('staffName').value || 'Priya';
+      const duration = document.getElementById('planDuration').value;
+      const role = document.getElementById('role').value || 'Receptionist';
+      const focus = document.getElementById('focusArea').value || 'Needs to learn Tally, improve Email writing';
+      const tasks = document.getElementById('tasksPerDay').value;
+
+      const densityInstruction = tasks.includes("Detailed") 
+          ? "Generate 5-8 granular micro-tasks per day." 
+          : "Generate 2-3 high-level tasks per day.";
+
+      const systemPrompt = `Act as a Senior System Architect & HR Planner.
+I need a structured JSON dataset for a **"${duration}" Work Plan**.
+
+**Context:**
+- Name: ${name}
+- Role: ${role}
+- Focus: ${focus}
+
+**OUTPUT REQUIREMENT:**
+Provide ONLY a valid JSON Array. Do not write any introduction, explanation, or markdown code blocks (like \`\`\`json). Just the raw string.
+
+**JSON Structure Rules:**
+1. The root must be an Array \`[]\`.
+2. Inside, create objects for every task of every day.
+3. ${densityInstruction}
+4. Use strictly these keys:
+   - "day": (Number, e.g., 1)
+   - "category": (String, either "Routine" or "Learning")
+   - "task": (String, specific actionable instruction)
+   - "resources": (String, YouTube keywords or "None" if purely routine)
+
+**Example Format:**
+[
+  {"day": 1, "category": "Routine", "task": "Check info@nuera.space email", "resources": "None"},
+  {"day": 1, "category": "Learning", "task": "Watch video on Email Etiquette", "resources": "Search: Professional Email Writing 2026"}
+]
+
+**Constraint:**
+Ensure the JSON is valid and minified (no line breaks inside strings).`;
+
+      document.getElementById('promptOutput').value = systemPrompt;
+    }
+
+    function copyPrompt() {
+      const copyText = document.getElementById("promptOutput");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText.value);
+    }
+  </script>
+</body>
+</html>
