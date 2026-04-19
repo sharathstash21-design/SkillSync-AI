@@ -205,18 +205,45 @@ function deleteBatch(batchId) {
 }
 
 // --- 4. UI HELPERS ---
+function doPost(e) {
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const action = payload.action;
+    const p = payload.params || {};
+    let result = {};
+    
+    switch(action) {
+      case 'getStaffList': result = getStaffList(); break;
+      case 'autoLogin': result = autoLogin(p.email); break;
+      case 'loginUser': result = loginUser(p.name, p.password); break;
+      case 'getStaffTasks': result = getStaffTasks(p.name); break;
+      case 'markTaskDone': result = markTaskDone(p.row, p.rating, p.remarks); break;
+      case 'getAdminSummary': result = getAdminSummary(); break;
+      case 'processJSON': result = processJSON(p.json, p.date, p.name, p.role); break;
+      case 'deleteBatch': deleteBatch(p.batchId); result = { success: true }; break;
+      default: result = { error: "Unknown API action: " + action };
+    }
+    
+    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ error: err.message })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
 function doGet(e) { 
   // Integration endpoint for the Antigravity Desktop Monitor Python Tool
   if (e && e.parameter && e.parameter.action === 'getProgress') {
     return handleGetProgress();
   }
+
+  // Provide raw index.html for backwards compatibility
   const template = HtmlService.createTemplateFromFile('index');
   try {
     template.activeEmail = Session.getActiveUser().getEmail() || '';
   } catch(err) {
     template.activeEmail = '';
   }
-  return template.evaluate().addMetaTag('viewport', 'width=device-width, initial-scale=1').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL); 
+  return template.evaluate().addMetaTag('viewport', 'width=device-width, initial-scale=1').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
 function handleGetProgress() {
