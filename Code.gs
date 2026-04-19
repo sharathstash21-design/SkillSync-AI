@@ -63,7 +63,8 @@ function getStaffList() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const s = ss.getSheetByName(CRED_SHEET);
   if (!s || s.getLastRow() <= 1) return ["Admin"];
-  return s.getRange(2, 1, s.getLastRow() - 1).getValues().flat().filter(String);
+  // Fetch Staff Name (Column 2) instead of Email
+  return s.getRange(2, 2, s.getLastRow() - 1).getValues().flat().filter(String);
 }
 
 function getStaffTasks(staffName) {

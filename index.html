@@ -296,9 +296,15 @@
     let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
 
     // Production Google Apps Script API Connection
-    const runAPI = google.script.run;
+    const isLive = typeof google !== 'undefined' && google.script && google.script.run;
+    const runAPI = isLive ? google.script.run : null;
 
     window.onload = () => {
+      if (!isLive) {
+         document.body.innerHTML = "<div style='display:flex;height:100vh;align-items:center;justify-content:center;background:#0f172a;color:white;text-align:center'><h2>⚠️ Access Denied</h2><p>This UI Portal must be accessed securely via your Google Apps Script Deployment URL.</p></div>";
+         return;
+      }
+      
       document.getElementById('m-rate').oninput = function() { document.getElementById('rate-val').innerText = this.value; }
       
       let userEmail = '<?= typeof activeEmail !== "undefined" ? activeEmail : "" ?>';
@@ -324,11 +330,16 @@
       const handleStaffList = (list) => {
         const sel = document.getElementById('login-name');
         sel.innerHTML = '<option value="" disabled selected>-- Select Name --</option>';
-        if(list.length === 0) sel.innerHTML += '<option disabled>No Staff Found</option>';
+        if(!list || list.length === 0) sel.innerHTML += '<option disabled>No Staff Found</option>';
         else list.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
       }
+      
+      const handleStaffError = (err) => {
+        document.getElementById('login-name').innerHTML = `<option disabled selected>Error: ${err.message}</option>`;
+        document.getElementById('msg').innerText = "Backend missing 'StaffCredentials' sheet or setup.";
+      };
 
-      runAPI.withSuccessHandler(handleStaffList).getStaffList();
+      runAPI.withFailureHandler(handleStaffError).withSuccessHandler(handleStaffList).getStaffList();
     }
 
     function login() {
