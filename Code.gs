@@ -205,25 +205,25 @@ function deleteBatch(batchId) {
 }
 
 // --- 4. UI HELPERS ---
+function handleAPIAction(action, p) {
+  switch(action) {
+    case 'getStaffList': return getStaffList();
+    case 'autoLogin': return autoLogin(p.email);
+    case 'loginUser': return loginUser(p.name, p.password);
+    case 'getStaffTasks': return getStaffTasks(p.name);
+    case 'markTaskDone': return markTaskDone(p.row, p.rating, p.remarks);
+    case 'getAdminSummary': return getAdminSummary();
+    case 'processJSON': return processJSON(p.json, p.date, p.name, p.role);
+    case 'deleteBatch': deleteBatch(p.batchId); return { success: true };
+    case 'getProgress': return JSON.parse(handleGetProgress().getContent());
+    default: return { error: "Unknown API action: " + action };
+  }
+}
+
 function doPost(e) {
   try {
     const payload = JSON.parse(e.postData.contents);
-    const action = payload.action;
-    const p = payload.params || {};
-    let result = {};
-    
-    switch(action) {
-      case 'getStaffList': result = getStaffList(); break;
-      case 'autoLogin': result = autoLogin(p.email); break;
-      case 'loginUser': result = loginUser(p.name, p.password); break;
-      case 'getStaffTasks': result = getStaffTasks(p.name); break;
-      case 'markTaskDone': result = markTaskDone(p.row, p.rating, p.remarks); break;
-      case 'getAdminSummary': result = getAdminSummary(); break;
-      case 'processJSON': result = processJSON(p.json, p.date, p.name, p.role); break;
-      case 'deleteBatch': deleteBatch(p.batchId); result = { success: true }; break;
-      default: result = { error: "Unknown API action: " + action };
-    }
-    
+    const result = handleAPIAction(payload.action, payload.params || {});
     return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
   } catch(err) {
     return ContentService.createTextOutput(JSON.stringify({ error: err.message })).setMimeType(ContentService.MimeType.JSON);
@@ -231,12 +231,17 @@ function doPost(e) {
 }
 
 function doGet(e) { 
-  // Integration endpoint for the Antigravity Desktop Monitor Python Tool
-  if (e && e.parameter && e.parameter.action === 'getProgress') {
-    return handleGetProgress();
+  // If ?action=xxx is present in URL, route it as a standard GET API request bypassing UI
+  if (e && e.parameter && e.parameter.action) {
+     try {
+       const result = handleAPIAction(e.parameter.action, e.parameter);
+       return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+     } catch(err) {
+       return ContentService.createTextOutput(JSON.stringify({ error: err.message })).setMimeType(ContentService.MimeType.JSON);
+     }
   }
 
-  // Provide raw index.html for backwards compatibility
+  // Provide HTML UI portal for users who simply click the web app link
   const template = HtmlService.createTemplateFromFile('index');
   try {
     template.activeEmail = Session.getActiveUser().getEmail() || '';
