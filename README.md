@@ -1,27 +1,34 @@
-# SkillSync-AI
-An AI-powered Enterprise Learning &amp; Task ERP built with Gemini 3 Flash and Google Apps Script for the Gen AI Academy 2026.
-SkillSync AI | Enterprise Learning & Task ERP
+🦁 SkillSync AI | Enterprise Learning & Task ERP
 Built for the Google Gen AI Academy APAC 2026
 
-💡 The Vision
-SkillSync AI is an intelligent workforce management tool designed for digital agencies (like NUERA) and SMEs. It bridges the gap between Generative AI Strategy and Human Execution by using Gemini to create personalized, day-by-day learning and routine paths for staff members.
+SkillSync AI is a professional workforce management tool designed for digital agencies (like NUERA). It bridges the gap between AI Strategy and Human Execution by using Gemini 3 Flash to generate personalized, high-density work plans.
 
-🛠️ Technical Stack
-Engine: Google Gemini 3 Flash (via API)
+🏗️ Technical Architecture
+I implemented a Decoupled Headless Architecture to ensure high performance and scalability:
 
-Backend: Google Apps Script (Automated Sheet Management)
+AI Engine: Google Gemini 3 Flash (JSON mode) for structured task generation.
 
-Database: Google Sheets (Relational Structure)
+Cloud Backend: Google Apps Script acting as an API Bridge (RESTful endpoints).
 
-Frontend: HTML5, Tailwind CSS, JavaScript (Mobile-Responsive)
+Database: Google Sheets used as a relational database for Task Tracking and Identity Management.
 
-Environment: Google Antigravity
+Frontend: Mobile-responsive UI built with Tailwind CSS, hosted on GitHub Pages.
 
-🌟 Key Features
-AI Planner: Integrated prompt engine that generates structured JSON work-plans.
+Monitoring: Desktop Assistant built in Google Antigravity using Python.
 
-Self-Healing Database: A "Scientist" script that auto-configures the spreadsheet environment on the first run.
+🌟 Exclusive "Scientist" Features
+1. Self-Healing Database (Scientist.gs)
+The system features an automated environment setup. On the first execution, the script detects the spreadsheet state and auto-configures headers, formatting, and protections.
 
-Staff Portal: A high-performance, mobile-first UI for employees to track daily routine and learning tasks.
+2. Antigravity Desktop Monitor (assistant.py)
+A custom Python tool that pings the Google Cloud API every few seconds to provide agency owners with a real-time progress bar of the entire workforce's completion rate.
 
-Admin Oversight: Real-time progress tracking and batch management for agency owners.
+3. Decoupled Identity Bridge
+Unlike standard Apps Script apps, SkillSync AI uses a custom Fetch-based bridge to allow a GitHub-hosted website to securely read and write to Google Sheets.
+
+🔗 Project Ecosystem
+Live Preview: https://sharathstash21-design.github.io/SkillSync-AI/
+
+Backend API: [PASTE_YOUR_APPS_SCRIPT_EXEC_LINK_HERE]
+
+Database (View Only): https://docs.google.com/spreadsheets/d/1NnsRW4WuKNObuZ3ZK-hqjmA3Z2iRLUMmuTHa5VPxXT8/edit?gid=130902396#gid=130902396
