@@ -295,50 +295,8 @@
   <script>
     let currentRow = null, allTasks = [], activeTaskId = null, currentFilter = 'All';
 
-    // Dynamic Google Apps Script REST API Connection
-    let WEB_APP_URL = '<?= typeof scriptUrl !== "undefined" ? scriptUrl : "" ?>';
-    if (WEB_APP_URL.startsWith("<?") || !WEB_APP_URL) {
-        WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyIydXwNXhDlhRNbSCa_KJCCZgFrGE57KpDrUnVisO7amtt63PWunIIicFjBTVyGy6u/exec";
-    }
-    
-    // Polyfill to transition google.script.run code into standard decoupled fetch calls
-    const runAPI = {
-       _success: null,
-       _failure: null,
-       withSuccessHandler(cb) { this._success = cb; return this; },
-       withFailureHandler(cb) { this._failure = cb; return this; },
-       
-       async _call(action, params) {
-          try {
-             // Use text/plain to bypass CORS preflight OPTIONS block on Apps Script
-             const res = await fetch(WEB_APP_URL, {
-                redirect: 'follow',
-                method: 'POST',
-                body: JSON.stringify({action, params}),
-                headers: {'Content-Type': 'text/plain;charset=utf-8'}
-             });
-             const data = await res.json();
-             if (this._success) this._success(data);
-          } catch(err) {
-             if (this._failure) this._failure(err);
-             else console.error("Cloud Error", err);
-          }
-       },
-       
-       autoLogin: (email) => runAPI._call('autoLogin', {email}),
-       getStaffList: () => runAPI._call('getStaffList', {}),
-       loginUser: (name, password) => runAPI._call('loginUser', {name, password}),
-       getStaffTasks: (name) => runAPI._call('getStaffTasks', {name}),
-       markTaskDone: (row, rating, remarks) => {
-           runAPI._call('markTaskDone', {row, rating, remarks}).then(() => {
-               if(runAPI._success) runAPI._success();
-               runAPI._success = null;
-           });
-       },
-       getAdminSummary: () => runAPI._call('getAdminSummary', {}),
-       processJSON: (json, date, name, role) => runAPI._call('processJSON', {json, date, name, role}),
-       deleteBatch: (batchId) => runAPI._call('deleteBatch', {batchId})
-    };
+    // Production Google Apps Script API Connection
+    const runAPI = google.script.run;
 
     window.onload = () => {
       document.getElementById('m-rate').oninput = function() { document.getElementById('rate-val').innerText = this.value; }
