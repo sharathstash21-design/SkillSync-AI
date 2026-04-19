@@ -35,7 +35,7 @@ function setupProject() {
     if (!sheet) {
       sheet = ss.insertSheet(s.name);
     }
-    // Always fix headers to ensure correct column order
+    // Always fix headers
     sheet.getRange(1, 1, 1, s.headers.length)
          .setValues([s.headers])
          .setFontWeight("bold")
